@@ -1,0 +1,50 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+
+# Кэш Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Переменные окружения
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Логи и базы данных
+*.log
+*.sqlite3
+*.db
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# IDE файлы
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# Файлы сессий и временные файлы
+.flaskenv
+instance/
+.webassets-cache
+.eslintcache
+
+# Дистрибутивные файлы
+dist/
+build/
+*.egg-info/

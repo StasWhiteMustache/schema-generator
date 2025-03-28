@@ -1,0 +1,158 @@
+/* Основные стили приложения */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  h1, h3 {
+    font-weight: 700;
+    color: #333;
+  }
+  
+  /* Иконки и декоративные элементы */
+  .schema-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  .schema-info {
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  /* Элементы формы */
+  .form-floating {
+    margin-bottom: 1.5rem;
+  }
+  
+  .tab-content {
+    padding-top: 1.5rem;
+  }
+  
+  .btn-generate-all {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Блоки с результатами */
+  #resultBlock, pre {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+  }
+  
+  .copy-container {
+    position: relative;
+  }
+  
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  /* Элементы отображения кода */
+  .code-block {
+    position: relative;
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .code-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+  }
+  
+  /* Спиннер загрузки */
+  .loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  /* Страница результатов */
+  .action-buttons {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .schema-type-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #6c757d;
+    border-radius: 0.25rem;
+    margin-left: 0.5rem;
+  }
+  
+  .url-display {
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem;
+    font-family: monospace;
+    word-break: break-all;
+  }
+  
+  /* Мобильная адаптация */
+  @media (max-width: 768px) {
+    .action-buttons {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .container {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+    }
+    
+    .code-block {
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  /* Стили для Highlight.js */
+  .hljs {
+    background: transparent;
+  }

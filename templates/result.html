@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результаты генерации микроразметки - Schema.org</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+  <!-- Highlight.js для подсветки синтаксиса -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/json.min.js"></script>
+  <!-- Подключение основного CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4 text-center">
+    <i class="bi bi-code-square schema-icon"></i>Сгенерированная микроразметка
+  </h1>
+  
+  <div class="alert alert-info">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    <strong>Важно:</strong> Эта микроразметка сгенерирована на основе <u>анализа содержимого вашего сайта</u> с помощью технологии веб-поиска. Добавьте эти блоки кода в соответствующие секции своего сайта для улучшения SEO и отображения в поисковых системах.
+  </div>
+  
+  <div class="url-display">
+    <i class="bi bi-link-45deg me-2"></i>URL: <strong>{{ url }}</strong>
+  </div>
+  
+  <div class="accordion" id="schemaAccordion">
+    {% for key, code in generated_code.items() %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading{{ loop.index }}">
+          <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ loop.index }}">
+            {{ key }}
+            <span class="schema-type-badge">Schema.org</span>
+            <span class="badge bg-success ms-2"><i class="bi bi-robot"></i> ИИ-анализ</span>
+          </button>
+        </h2>
+        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#schemaAccordion">
+          <div class="accordion-body p-0">
+            <div class="code-block">
+              <div class="code-header">
+                <h5 class="code-title">
+                  <i class="bi bi-code-slash me-2"></i>JSON-LD микроразметка
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary copy-btn" data-code-id="code{{ loop.index }}">
+                  <i class="bi bi-clipboard"></i> Копировать
+                </button>
+              </div>
+              <pre><code class="language-html" id="code{{ loop.index }}">{{ code | e }}</code></pre>
+            </div>
+            <div class="p-3 bg-light border-top">
+              <p class="mb-0 small">
+                <i class="bi bi-info-circle me-1"></i>
+                Эта микроразметка была создана на основе реального анализа содержимого сайта с использованием технологии веб-поиска OpenAI.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <div class="action-buttons">
+    <a href="/" class="btn btn-primary">
+      <i class="bi bi-arrow-left me-2"></i>Вернуться назад
+    </a>
+    <a href="https://search.google.com/test/rich-results" target="_blank" class="btn btn-success">
+      <i class="bi bi-google me-2"></i>Проверить в Google
+    </a>
+    <a href="https://validator.schema.org/" target="_blank" class="btn btn-info">
+      <i class="bi bi-check-circle me-2"></i>Валидировать Schema.org
+    </a>
+  </div>
+  
+  <div class="card mt-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Как работает технология веб-поиска?</h5>
+    </div>
+    <div class="card-body">
+      <p>Для создания микроразметки была использована новейшая технология веб-поиска от OpenAI. Вот что происходило:</p>
+      <ol>
+        <li><strong>Анализ структуры сайта</strong> - система изучила структуру и навигацию вашего сайта</li>
+        <li><strong>Извлечение данных</strong> - из содержимого страниц были извлечены ключевые данные, такие как контактная информация, названия, цены и т.д.</li>
+        <li><strong>Структурирование данных</strong> - полученные данные были структурированы в формате Schema.org</li>
+        <li><strong>Оптимизация кода</strong> - сгенерированный код был оптимизирован для соответствия стандартам и лучшим практикам</li>
+      </ol>
+      <p class="mb-0">Благодаря этому подходу, микроразметка содержит реальные данные с вашего сайта, что значительно повышает её эффективность для поисковых систем.</p>
+    </div>
+  </div>
+  
+  <div class="text-center mt-4">
+    <small class="text-muted">
+      Сгенерировано с использованием <a href="https://schema.org" target="_blank">Schema.org</a> и технологии веб-поиска OpenAI
+    </small>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Инициализация подсветки синтаксиса
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightBlock(block);
+    });
+  });
+  
+  // Функция копирования текста
+  document.querySelectorAll('.copy-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const codeId = this.getAttribute('data-code-id');
+      const codeElement = document.getElementById(codeId);
+      const codeText = codeElement.textContent;
+      
+      navigator.clipboard.writeText(codeText).then(() => {
+        // Изменяем текст кнопки на время
+        const originalHTML = this.innerHTML;
+        this.innerHTML = '<i class="bi bi-check"></i> Скопировано!';
+        
+        setTimeout(() => {
+          this.innerHTML = originalHTML;
+        }, 2000);
+      }).catch(err => {
+        console.error('Ошибка копирования: ', err);
+        const originalHTML = this.innerHTML;
+        this.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Ошибка';
+        
+        setTimeout(() => {
+          this.innerHTML = originalHTML;
+        }, 2000);
+      });
+    });
+  });
+</script>
+</body>
+</html>
