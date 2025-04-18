@@ -156,3 +156,77 @@ body {
   .hljs {
     background: transparent;
   }
+
+  /* Стили для предпросмотра сниппетов */
+  .snippet-preview {
+    background-color: #f9f9f9;
+  }
+
+  .snippet-preview-title {
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .snippet-container {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .google-snippet {
+    font-family: Arial, sans-serif;
+  }
+
+  .snippet-title {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+    color: #1a0dab;
+  }
+
+  .snippet-url {
+    color: #006621;
+    margin-bottom: 4px;
+  }
+
+  .snippet-description {
+    color: #545454;
+    line-height: 1.4;
+  }
+
+  .snippet-rating .text-warning {
+    letter-spacing: -2px;
+    font-size: 0.9rem;
+  }
+
+  .breadcrumbs {
+    color: #777;
+    margin-bottom: 4px;
+  }
+
+  .faq-item {
+    margin-bottom: 8px;
+  }
+
+  .snippet-notice {
+    color: #777;
+    padding-top: 8px;
+    border-top: 1px dotted #ddd;
+    margin-top: 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Кнопка переключения предпросмотра */
+  .preview-toggle-btn {
+    font-size: 0.8rem;
+    margin-top: 5px;
+  }
+
+  /* Анимация для предпросмотра */
+  .snippet-container {
+    transition: all 0.3s ease;
+  }
+
+  .snippet-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }

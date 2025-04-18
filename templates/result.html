@@ -25,7 +25,7 @@
   
   <div class="alert alert-info">
     <i class="bi bi-info-circle-fill me-2"></i>
-    <strong>Важно:</strong> Эта микроразметка сгенерирована на основе <u>анализа содержимого вашего сайта</u> с помощью технологии веб-поиска. Добавьте эти блоки кода в соответствующие секции своего сайта для улучшения SEO и отображения в поисковых системах.
+    <strong>iSEO Schema Generator:</strong> Инструмент для SEO-специалистов, создающий микроразметку на основе <u>анализа содержимого сайта</u>. Добавьте эти блоки кода в соответствующие секции сайта для улучшения представления в поисковой выдаче.
   </div>
   
   <div class="url-display">
@@ -55,6 +55,117 @@
               </div>
               <pre><code class="language-html" id="code{{ loop.index }}">{{ code | e }}</code></pre>
             </div>
+            
+            <!-- Добавляем предпросмотр сниппета -->
+            <div class="snippet-preview my-3 p-3 border-top">
+              <h6 class="snippet-preview-title mb-3">
+                <i class="bi bi-eye me-2"></i>Предпросмотр Rich Snippets:
+                <span class="badge bg-info ms-2">Google</span>
+              </h6>
+              <div class="snippet-container p-3 border rounded bg-white" id="snippet{{ loop.index }}">
+                <!-- Контейнер для предпросмотра сниппета -->
+                {% if key == "Контактные данные" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">{{ domain }} - Контактная информация</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div><i class="bi bi-geo-alt text-secondary me-1"></i> Адрес: <span class="snippet-address">Москва, ул. Примерная, 123</span></div>
+                      <div><i class="bi bi-telephone text-secondary me-1"></i> Телефон: <span class="snippet-phone">+7 (XXX) XXX-XX-XX</span></div>
+                      <div><i class="bi bi-clock text-secondary me-1"></i> Часы работы: <span class="snippet-hours">Пн-Пт: 9:00-18:00</span></div>
+                    </div>
+                  </div>
+                {% elif key == "Карточка товара" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">Название товара - {{ domain }}</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div class="d-flex align-items-center mb-1">
+                        <div class="snippet-rating">
+                          <span class="text-warning">★★★★★</span>
+                        </div>
+                        <span class="snippet-reviews ms-1">(123 отзыва)</span>
+                        <span class="snippet-price ms-2 fw-bold">15 990 ₽</span>
+                      </div>
+                      <div>В наличии · Быстрая доставка</div>
+                    </div>
+                  </div>
+                {% elif key == "Каталог товаров" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">Каталог товаров - {{ domain }}</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div class="d-flex align-items-center mb-1">
+                        <div class="snippet-rating">
+                          <span class="text-warning">★★★★★</span>
+                        </div>
+                        <span class="snippet-reviews ms-1">(324 отзыва)</span>
+                      </div>
+                      <div>Цены: <span class="fw-bold">от 5 000 ₽ до 150 000 ₽</span> · 125 товаров</div>
+                    </div>
+                  </div>
+                {% elif key == "FAQ" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">Часто задаваемые вопросы - {{ domain }}</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div class="snippet-faq">
+                        <div class="faq-item mb-2">
+                          <div class="fw-bold">Как сделать заказ?</div>
+                          <div>Для оформления заказа добавьте товары в корзину и следуйте...</div>
+                        </div>
+                        <div class="faq-item">
+                          <div class="fw-bold">Какие способы доставки вы предлагаете?</div>
+                          <div>Мы предлагаем курьерскую доставку, самовывоз из наших...</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% elif key == "QA страница" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">{{ domain }} - Вопросы и ответы</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div class="fw-bold mb-1">Товары</div>
+                      <div class="mb-1">⭐ Высокое качество товаров 💎 Доставка по всей России 💎 Выгодная бонусная система</div>
+                      <div class="text-secondary small">
+                        <span>26 человек нашли ответ полезным</span>
+                        <span class="ms-3">Ответов: 1</span>
+                      </div>
+                    </div>
+                  </div>
+                {% elif key == "Хлебные крошки" %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">Название страницы - {{ domain }}</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      <div class="breadcrumbs small text-secondary">
+                        Главная > Каталог > 📦📦📦 Категория товаров > Подкатегория
+                      </div>
+                      <div>Описание страницы с хлебными крошками.</div>
+                    </div>
+                  </div>
+                {% elif key == "Форма поиска" or key == "Логотип" or key == "Организация" %}
+                  <div class="google-snippet text-center">
+                    <div class="py-3">
+                      <i class="bi bi-info-circle text-muted me-2"></i>
+                      <span class="text-muted">Этот тип микроразметки не влияет на отображение в поисковой выдаче</span>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="google-snippet">
+                    <div class="snippet-title text-primary fw-bold">{{ domain }}</div>
+                    <div class="snippet-url text-success small mb-1">{{ url }}</div>
+                    <div class="snippet-description text-dark small">
+                      Предпросмотр для типа "{{ key }}" поможет визуализировать, как этот тип микроразметки может отображаться в результатах поиска...
+                    </div>
+                  </div>
+                {% endif %}
+                <div class="snippet-notice text-center text-muted small mt-2">
+                  <i class="bi bi-info-circle me-1"></i>Это приблизительный вид сниппета. Фактическое отображение может отличаться.
+                </div>
+              </div>
+            </div>
+            
             <div class="p-3 bg-light border-top">
               <p class="mb-0 small">
                 <i class="bi bi-info-circle me-1"></i>
@@ -79,25 +190,9 @@
     </a>
   </div>
   
-  <div class="card mt-4">
-    <div class="card-header bg-light">
-      <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Как работает технология веб-поиска?</h5>
-    </div>
-    <div class="card-body">
-      <p>Для создания микроразметки была использована новейшая технология веб-поиска от OpenAI. Вот что происходило:</p>
-      <ol>
-        <li><strong>Анализ структуры сайта</strong> - система изучила структуру и навигацию вашего сайта</li>
-        <li><strong>Извлечение данных</strong> - из содержимого страниц были извлечены ключевые данные, такие как контактная информация, названия, цены и т.д.</li>
-        <li><strong>Структурирование данных</strong> - полученные данные были структурированы в формате Schema.org</li>
-        <li><strong>Оптимизация кода</strong> - сгенерированный код был оптимизирован для соответствия стандартам и лучшим практикам</li>
-      </ol>
-      <p class="mb-0">Благодаря этому подходу, микроразметка содержит реальные данные с вашего сайта, что значительно повышает её эффективность для поисковых систем.</p>
-    </div>
-  </div>
-  
   <div class="text-center mt-4">
     <small class="text-muted">
-      Сгенерировано с использованием <a href="https://schema.org" target="_blank">Schema.org</a> и технологии веб-поиска OpenAI
+      <strong>iSEO Schema Generator</strong> — внутренний инструмент для SEO-специалистов
     </small>
   </div>
 </div>
@@ -109,6 +204,26 @@
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('pre code').forEach((block) => {
       hljs.highlightBlock(block);
+    });
+    
+    // Инициализация предпросмотра сниппетов
+    initializeSnippetPreview();
+    
+    // Получаем фактический домен из URL
+    const actualDomain = "{{ domain }}";
+    
+    // Обновляем все заголовки сниппетов, заменяя localhost на фактический домен
+    document.querySelectorAll('.snippet-title').forEach(title => {
+      if (title.textContent.includes('localhost')) {
+        title.textContent = title.textContent.replace('localhost', actualDomain);
+      }
+    });
+    
+    // Обновляем все URL в сниппетах
+    document.querySelectorAll('.snippet-url').forEach(urlEl => {
+      if (urlEl.textContent.includes('localhost')) {
+        urlEl.textContent = "{{ url }}";
+      }
     });
   });
   
@@ -138,6 +253,200 @@
       });
     });
   });
+  
+  // Функция для инициализации предпросмотра сниппетов
+  function initializeSnippetPreview() {
+    document.querySelectorAll('pre code').forEach((codeBlock, index) => {
+      const snippetContainer = document.getElementById(`snippet${index + 1}`);
+      if (!snippetContainer) return;
+      
+      try {
+        // Извлекаем JSON-LD из кода
+        const codeText = codeBlock.textContent;
+        const jsonMatch = codeText.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+        
+        if (jsonMatch && jsonMatch[1]) {
+          const jsonData = JSON.parse(jsonMatch[1].trim());
+          
+          // Обновляем предпросмотр в зависимости от типа микроразметки
+          updateSnippetPreview(snippetContainer, jsonData);
+        }
+      } catch (e) {
+        console.warn('Не удалось распарсить микроразметку:', e);
+      }
+    });
+  }
+  
+  // Функция для обновления предпросмотра сниппета на основе данных
+  function updateSnippetPreview(container, jsonData) {
+    // Определяем тип микроразметки
+    const type = jsonData['@type'];
+    
+    // Проверяем, является ли этот тип тем, что не отображается в сниппете
+    const nonVisibleTypes = ['Organization', 'WebSite', 'ImageObject'];
+    if (nonVisibleTypes.includes(type)) {
+      // Для таких типов не обновляем предпросмотр, т.к. они не влияют на отображение в выдаче
+      return;
+    }
+    
+    // Находим элементы внутри контейнера
+    const titleEl = container.querySelector('.snippet-title');
+    const urlEl = container.querySelector('.snippet-url');
+    
+    // Обновляем общие элементы, если они существуют
+    if (titleEl && jsonData.name) {
+      titleEl.textContent = jsonData.name;
+    }
+    
+    if (urlEl && jsonData.url) {
+      urlEl.textContent = jsonData.url;
+    }
+    
+    // Обновляем специфичные для типа элементы
+    switch (type) {
+      case 'LocalBusiness':
+        updateLocalBusinessPreview(container, jsonData);
+        break;
+      case 'Product':
+        updateProductPreview(container, jsonData);
+        break;
+      case 'CollectionPage':
+        updateCollectionPreview(container, jsonData);
+        break;
+      case 'FAQPage':
+        updateFAQPreview(container, jsonData);
+        break;
+      case 'QAPage':
+        updateQAPreview(container, jsonData);
+        break;
+      case 'BreadcrumbList':
+        updateBreadcrumbsPreview(container, jsonData);
+        break;
+    }
+  }
+  
+  // Функции обновления для разных типов
+  function updateLocalBusinessPreview(container, data) {
+    const addressEl = container.querySelector('.snippet-address');
+    const phoneEl = container.querySelector('.snippet-phone');
+    const hoursEl = container.querySelector('.snippet-hours');
+    
+    if (addressEl && data.address) {
+      addressEl.textContent = [
+        data.address.addressLocality, 
+        data.address.streetAddress
+      ].filter(Boolean).join(', ');
+    }
+    
+    if (phoneEl && data.telephone) {
+      phoneEl.textContent = data.telephone;
+    }
+    
+    if (hoursEl && data.openingHours) {
+      hoursEl.textContent = data.openingHours;
+    }
+  }
+  
+  function updateProductPreview(container, data) {
+    const ratingEl = container.querySelector('.snippet-reviews');
+    const priceEl = container.querySelector('.snippet-price');
+    
+    if (priceEl && data.offers && data.offers.price) {
+      const price = data.offers.price;
+      const currency = data.offers.priceCurrency || 'RUB';
+      const currencySymbol = currency === 'RUB' ? '₽' : currency;
+      
+      priceEl.textContent = `${formatPrice(price)} ${currencySymbol}`;
+    }
+    
+    // Обновляем другие элементы продукта по необходимости
+  }
+  
+  function updateCollectionPreview(container, data) {
+    const lowPriceEl = container.querySelector('.fw-bold');
+    
+    if (lowPriceEl && data.mainEntity && data.mainEntity.offers) {
+      const offers = data.mainEntity.offers;
+      if (offers.lowPrice && offers.highPrice) {
+        const currency = offers.priceCurrency || 'RUB';
+        const currencySymbol = currency === 'RUB' ? '₽' : currency;
+        
+        lowPriceEl.textContent = `от ${formatPrice(offers.lowPrice)}${currencySymbol} до ${formatPrice(offers.highPrice)}${currencySymbol}`;
+      }
+    }
+  }
+  
+  function updateFAQPreview(container, data) {
+    const faqContainer = container.querySelector('.snippet-faq');
+    
+    if (faqContainer && data.mainEntity && Array.isArray(data.mainEntity)) {
+      faqContainer.innerHTML = '';
+      
+      // Берем первые 2 вопроса для предпросмотра
+      const questions = data.mainEntity.slice(0, 2);
+      
+      questions.forEach((q, index) => {
+        const faqItem = document.createElement('div');
+        faqItem.className = 'faq-item' + (index < questions.length - 1 ? ' mb-2' : '');
+        
+        const question = document.createElement('div');
+        question.className = 'fw-bold';
+        question.textContent = q.name;
+        
+        const answer = document.createElement('div');
+        answer.textContent = q.acceptedAnswer.text.length > 60 
+          ? q.acceptedAnswer.text.substring(0, 60) + '...' 
+          : q.acceptedAnswer.text;
+        
+        faqItem.appendChild(question);
+        faqItem.appendChild(answer);
+        faqContainer.appendChild(faqItem);
+      });
+    }
+  }
+  
+  function updateQAPreview(container, data) {
+    if (data.mainEntity) {
+      const questionEl = container.querySelector('.fw-bold');
+      const answerEl = container.querySelector('.mb-1:not(.fw-bold)');
+      const upvotesEl = container.querySelector('.text-secondary');
+      
+      if (questionEl && data.mainEntity.name) {
+        questionEl.textContent = data.mainEntity.name;
+      }
+      
+      if (answerEl && data.mainEntity.acceptedAnswer && data.mainEntity.acceptedAnswer.text) {
+        answerEl.textContent = data.mainEntity.acceptedAnswer.text;
+      }
+      
+      if (upvotesEl) {
+        let upvoteText = '';
+        if (data.mainEntity.upvoteCount) {
+          upvoteText = `${data.mainEntity.upvoteCount} человек нашли ответ полезным`;
+        } else if (data.mainEntity.acceptedAnswer && data.mainEntity.acceptedAnswer.upvoteCount) {
+          upvoteText = `${data.mainEntity.acceptedAnswer.upvoteCount} человек нашли ответ полезным`;
+        } else {
+          upvoteText = `25 человек нашли ответ полезным`;
+        }
+        upvotesEl.textContent = upvoteText;
+      }
+    }
+  }
+  
+  function updateBreadcrumbsPreview(container, data) {
+    const breadcrumbsEl = container.querySelector('.breadcrumbs');
+    
+    if (breadcrumbsEl && data.itemListElement && Array.isArray(data.itemListElement)) {
+      const breadcrumbs = data.itemListElement.map(item => item.name).join(' > ');
+      breadcrumbsEl.textContent = breadcrumbs;
+    }
+  }
+  
+  // Вспомогательная функция для форматирования цены
+  function formatPrice(price) {
+    // Форматируем число без валюты, убираем возможные пробелы в конце
+    return parseFloat(price).toLocaleString('ru-RU').trim();
+  }
 </script>
 </body>
 </html>

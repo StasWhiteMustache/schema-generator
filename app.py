@@ -40,7 +40,7 @@ ELEMENT_TYPES = {
     "logo": "Логотип",
     "faq": "Часто задаваемые вопросы",
     "article": "Статья",
-    "event": "Событие",
+    "qapage": "QA страница",
     "organization": "Организация"
 }
 
@@ -81,9 +81,9 @@ async def generate_microdata_template(element_type: str, url: str, session_id: s
         
         "product": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для карточки товара. Используй тип Product, включи название товара, описание, бренд, изображение, артикул (SKU), цену, валюту и наличие, которые ты найдешь на сайте. Если это страница товара, используй информацию с нее.",
         
-        "catalog": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для категории товаров. Включи название категории, описание, диапазон цен, количество товаров, которые ты найдешь на сайте.",
+        "catalog": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для категории товаров с использованием AggregateOffer. Включи название категории, описание, диапазон цен (lowPrice и highPrice), количество товаров (offerCount), а также рейтинг (ratingValue должен быть выше 4.5, с рандомным значением между 4.5 и 5.0, reviewCount - рандомное значение между 50 и 500). Используй структуру, где тип страницы будет CollectionPage, а внутри будет Product с AggregateOffer. Найди на странице реальные цены товаров для указания диапазона цен.",
         
-        "breadcrumbs": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для хлебных крошек, основываясь на настоящей структуре навигации сайта. Используй тип BreadcrumbList с реальными разделами сайта.",
+        "breadcrumbs": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для хлебных крошек, основываясь на настоящей структуре навигации сайта. Используй тип BreadcrumbList с реальными разделами сайта. Очень важно: в предпоследнем сегменте хлебных крошек (обычно это категория или раздел) обязательно добавь подходящие по смыслу эмоджи перед названием (например, для раздела 'Apple' добавь '📱📱📱 Apple'). Выбери эмоджи, соответствующие содержимому раздела.",
         
         "searchform": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для поисковой формы сайта. Используй тип WebSite с potentialAction типа SearchAction, основываясь на реальном URL поиска сайта.",
         
@@ -93,7 +93,7 @@ async def generate_microdata_template(element_type: str, url: str, session_id: s
         
         "article": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для статьи. Используй тип Article, включи заголовок, описание, автора, издателя, дату публикации и изображение с реального сайта.",
         
-        "event": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для события. Используй тип Event, включи название, описание, даты начала и окончания, место проведения, организатора и информацию о билетах, основываясь на реальных данных с сайта.",
+        "qapage": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для QAPage. Используй тип QAPage с одним вопросом и ответом. Вопросом должно быть название категории товаров или услуг, найденное на странице. Обязательно включи поле 'answerCount' со значением 1. Ответ должен включать УТП (уникальные торговые предложения) компании, которые ты найдешь на сайте (например, 'Высокое качество', 'Доставка по всей России', 'Выгодная бонусная система'). В ответе обязательно используй соответствующие эмоджи (например, ⭐ 💎 🚚). Укажи upvoteCount между 20 и 30, а URL ответа должен совпадать с URL текущей страницы.",
         
         "organization": f"Посети сайт {url} и создай микроразметку Schema.org JSON-LD для организации. Используй тип Organization, включи настоящее название организации, адрес, контактные данные, ссылки на социальные сети, которые ты найдешь на сайте."
     }
@@ -190,7 +190,6 @@ async def generate_microdata_template(element_type: str, url: str, session_id: s
 }}
 </script>""",
             
-            # Другие типы добавьте аналогично
             "product": f"""<script type="application/ld+json">
 {{
   "@context": "https://schema.org/",
@@ -210,6 +209,192 @@ async def generate_microdata_template(element_type: str, url: str, session_id: s
     "availability": "https://schema.org/InStock"
   }}
 }}
+</script>""",
+
+            "catalog": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Каталог товаров",
+  "description": "Раздел с товарами на сайте {domain}",
+  "mainEntity": {{
+    "@type": "Product",
+    "name": "Товары с сайта {domain}",
+    "offers": {{
+      "@type": "AggregateOffer",
+      "lowPrice": "5000",
+      "highPrice": "150000",
+      "priceCurrency": "RUB",
+      "offerCount": "125",
+      "availability": "https://schema.org/InStock"
+    }},
+    "aggregateRating": {{
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "324"
+    }}
+  }}
+}}
+</script>""",
+
+            "breadcrumbs": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "{url}"
+    }},
+    {{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Каталог",
+      "item": "{url}/catalog/"
+    }},
+    {{
+      "@type": "ListItem",
+      "position": 3,
+      "name": "📦📦📦 Категория товаров",
+      "item": "{url}/catalog/category/"
+    }},
+    {{
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Подкатегория",
+      "item": "{url}/catalog/category/subcategory/"
+    }}
+  ]
+}}
+</script>""",
+
+            "searchform": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "{url}",
+  "potentialAction": {{
+    "@type": "SearchAction",
+    "target": "{url}/search?q={{search_term_string}}",
+    "query-input": "required name=search_term_string"
+  }}
+}}
+</script>""",
+
+            "logo": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "{url}",
+  "logo": "{url}/logo.png"
+}}
+</script>""",
+
+            "faq": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{
+      "@type": "Question",
+      "name": "Как сделать заказ?",
+      "acceptedAnswer": {{
+        "@type": "Answer",
+        "text": "Для оформления заказа добавьте товары в корзину и следуйте инструкциям на экране."
+      }}
+    }},
+    {{
+      "@type": "Question",
+      "name": "Какие способы доставки вы предлагаете?",
+      "acceptedAnswer": {{
+        "@type": "Answer",
+        "text": "Мы предлагаем курьерскую доставку, самовывоз из наших пунктов выдачи и доставку почтой."
+      }}
+    }},
+    {{
+      "@type": "Question",
+      "name": "Как вернуть товар?",
+      "acceptedAnswer": {{
+        "@type": "Answer",
+        "text": "Вы можете вернуть товар в течение 14 дней с момента покупки при сохранении товарного вида."
+      }}
+    }}
+  ]
+}}
+</script>""",
+
+            "article": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Заголовок статьи",
+  "description": "Описание статьи",
+  "image": "{url}/image.jpg",
+  "datePublished": "2023-01-01T10:00:00+03:00",
+  "dateModified": "2023-01-01T12:00:00+03:00",
+  "author": {{
+    "@type": "Person",
+    "name": "Автор статьи"
+  }},
+  "publisher": {{
+    "@type": "Organization",
+    "name": "Компания с сайта {domain}",
+    "logo": {{
+      "@type": "ImageObject",
+      "url": "{url}/logo.png"
+    }}
+  }}
+}}
+</script>""",
+
+            "qapage": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "QAPage",
+  "mainEntity": {{
+    "@type": "Question",
+    "name": "Товары",
+    "answerCount": 1,
+    "upvoteCount": 26,
+    "datePublished": "{time.strftime('%Y-%m-%dT%H:%M:%S')}",
+    "acceptedAnswer": {{
+      "@type": "Answer",
+      "url": "{url}",
+      "text": "⭐ Высокое качество товаров 💎 Доставка по всей России 💎 Выгодная бонусная система",
+      "upvoteCount": 26,
+      "datePublished": "{time.strftime('%Y-%m-%dT%H:%M:%S')}"
+    }}
+  }}
+}}
+</script>""",
+
+            "organization": f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Компания с сайта {domain}",
+  "url": "{url}",
+  "logo": "{url}/logo.png",
+  "contactPoint": {{
+    "@type": "ContactPoint",
+    "telephone": "+7 (XXX) XXX-XX-XX",
+    "contactType": "customer service",
+    "availableLanguage": ["Russian"]
+  }},
+  "address": {{
+    "@type": "PostalAddress",
+    "streetAddress": "Адрес компании",
+    "addressLocality": "Москва",
+    "postalCode": "101000",
+    "addressCountry": "RU"
+  }},
+  "sameAs": [
+    "https://vk.com/company",
+    "https://t.me/company"
+  ]
+}}
 </script>"""
         }
         
@@ -224,6 +409,9 @@ def generate_template():
         element_type = data.get("element_type")
         url = data.get("url")
         
+        # Извлекаем домен из URL
+        domain = urlparse(url).netloc
+        
         # Создаем уникальный идентификатор сессии
         session_id = str(uuid.uuid4())
         
@@ -235,6 +423,7 @@ def generate_template():
         active_tasks[session_id] = {
             'element_type': element_type,
             'url': url,
+            'domain': domain,
             'status': 'starting',
             'start_time': time.time()
         }
@@ -257,7 +446,8 @@ def generate_template():
                 # Отправляем результат через сокет
                 socketio.emit('generation_result', {
                     'session_id': session_id,
-                    'result': generated
+                    'result': generated,
+                    'domain': domain
                 })
             except Exception as e:
                 # Обновляем статус задачи при ошибке
@@ -442,11 +632,12 @@ def results():
 def get_results(session_id):
     if session_id in active_tasks and active_tasks[session_id]['status'] == 'completed':
         url = active_tasks[session_id]['url']
+        domain = urlparse(url).netloc
         generated_code = active_tasks[session_id]['results']
-        return render_template('result.html', generated_code=generated_code, url=url)
+        return render_template('result.html', generated_code=generated_code, url=url, domain=domain)
     else:
         flash('Задача генерации не найдена или не завершена', 'error')
         return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, port=5003)

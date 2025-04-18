@@ -17,22 +17,22 @@
 </head>
 <body>
 <div class="container">
-  <h1 class="text-center mb-4"><i class="bi bi-code-square schema-icon"></i>Интеллектуальный генератор микроразметки</h1>
+  <h1 class="text-center mb-4"><i class="bi bi-code-square schema-icon"></i>iSEO Schema Generator</h1>
   
   <div class="schema-info">
-    <p>Микроразметка помогает поисковым системам лучше понимать содержимое вашего сайта и улучшает его представление в результатах поиска. <strong>Наш AI с функцией веб-поиска анализирует ваш сайт и генерирует персонализированную микроразметку, основанную на реальном содержимом.</strong></p>
+    <p>Внутренний инструмент для SEO-специалистов, генерирующий микроразметку Schema.org на основе анализа сайта. <strong>AI с функцией веб-поиска создаёт персонализированную микроразметку, основанную на реальном содержимом.</strong></p>
     <div class="alert alert-info">
       <i class="bi bi-lightbulb-fill me-2"></i>
-      <strong>Новинка!</strong> Теперь генератор использует технологию веб-поиска для <u>изучения содержимого вашего сайта</u> и создания более точной микроразметки.
+      <strong>Pro tip:</strong> Для более точных результатов используйте URL страницы, соответствующей типу микроразметки (например, URL товара для Product).
     </div>
   </div>
   
   <ul class="nav nav-tabs" id="schemaTabs" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single-schema" type="button" role="tab" aria-controls="single-schema" aria-selected="true">Отдельный шаблон</button>
+      <button class="nav-link active" id="single-tab" data-bs-toggle="tab" data-bs-target="#single-schema" type="button" role="tab" aria-controls="single-schema" aria-selected="true">Единичная генерация</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-schemas" type="button" role="tab" aria-controls="all-schemas" aria-selected="false">Все шаблоны</button>
+      <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-schemas" type="button" role="tab" aria-controls="all-schemas" aria-selected="false">Полный комплект</button>
     </li>
   </ul>
   
@@ -55,7 +55,7 @@
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-primary btn-lg" id="generateBtn">
-            <i class="bi bi-search me-2"></i> Проанализировать сайт и создать микроразметку
+            <i class="bi bi-code-square me-2"></i> Сгенерировать микроразметку
           </button>
         </div>
       </form>
@@ -126,6 +126,24 @@
           </button>
         </div>
         <pre id="resultBlock" class="p-3 bg-light border rounded"></pre>
+        
+        <!-- Добавляем блок предпросмотра для единичной генерации -->
+        <div class="snippet-preview my-3 p-3 border rounded">
+          <h6 class="snippet-preview-title mb-3">
+            <i class="bi bi-eye me-2"></i>Предпросмотр Rich Snippets:
+            <span class="badge bg-info ms-2">Google</span>
+          </h6>
+          <div class="snippet-container p-3 border rounded bg-white" id="singleSnippet">
+            <!-- Здесь будет отображаться предпросмотр сниппета -->
+            <div class="google-snippet-placeholder text-center py-3">
+              <i class="bi bi-hourglass-split text-muted me-2"></i>
+              <span class="text-muted">Сниппет будет отображен после генерации</span>
+            </div>
+          </div>
+          <div class="snippet-notice text-center text-muted small mt-2">
+            <i class="bi bi-info-circle me-1"></i>Это приблизительный вид сниппета. Фактическое отображение может отличаться.
+          </div>
+        </div>
       </div>
     </div>
     
@@ -139,11 +157,11 @@
         </div>
         <div class="alert alert-warning mb-3">
           <i class="bi bi-info-circle-fill me-2"></i>
-          Генерация всех типов микроразметки с анализом сайта может занять 3-5 минут
+          Генерация всех типов микроразметки займет около 2-3 минут
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-success btn-lg btn-generate-all">
-            <i class="bi bi-search me-2"></i> Провести полный анализ сайта
+            <i class="bi bi-code-square me-2"></i> Сгенерировать полный комплект
           </button>
         </div>
       </form>
@@ -180,34 +198,34 @@
   
   <div class="text-center mt-4">
     <small class="text-muted">
-      Сгенерировано с использованием <a href="https://schema.org" target="_blank">Schema.org</a> и технологии веб-поиска OpenAI API
+      iSEO Schema Generator — внутренний инструмент для SEO-специалистов
     </small>
   </div>
   
   <div class="features-section mt-5 mb-3">
-    <h4 class="text-center mb-4">Преимущества технологии веб-поиска</h4>
+    <h4 class="text-center mb-4">Преимущества для SEO-специалистов</h4>
     <div class="row g-4">
       <div class="col-md-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-search text-primary me-2"></i>Реальные данные</h5>
-            <p class="card-text">AI анализирует содержимое вашего сайта и извлекает реальные данные: названия, адреса, цены и другую информацию.</p>
+            <h5 class="card-title"><i class="bi bi-search text-primary me-2"></i>Точность данных</h5>
+            <p class="card-text">Автоматический анализ сайта извлекает реальные данные: названия, цены, адреса и другую информацию без необходимости ручного ввода.</p>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-bullseye text-primary me-2"></i>Точность</h5>
-            <p class="card-text">Микроразметка создается на основе актуальной информации с вашего сайта, что повышает её соответствие требованиям поисковых систем.</p>
+            <h5 class="card-title"><i class="bi bi-lightning-charge text-primary me-2"></i>Скорость работы</h5>
+            <p class="card-text">Генерация готовой к использованию микроразметки занимает секунды вместо минут ручного создания, что экономит время SEO-специалиста.</p>
           </div>
         </div>
       </div>
       <div class="col-md-4">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-lightning-charge text-primary me-2"></i>Автоматизация</h5>
-            <p class="card-text">Нет необходимости вручную вводить данные. Система сама находит и структурирует информацию с вашего сайта.</p>
+            <h5 class="card-title"><i class="bi bi-eye text-primary me-2"></i>Предпросмотр</h5>
+            <p class="card-text">Визуализация сниппетов помогает оценить, как микроразметка будет выглядеть в результатах поиска, перед добавлением на сайт.</p>
           </div>
         </div>
       </div>
@@ -341,6 +359,9 @@
     // Показываем результат
     document.getElementById('resultBlock').textContent = data.result;
     document.getElementById('resultContainer').style.display = 'block';
+    
+    // Обновляем предпросмотр сниппета
+    updateSingleSnippetPreview(data.result, data.domain);
     
     // Разблокируем кнопку
     document.getElementById('generateBtn').disabled = false;
@@ -548,6 +569,305 @@
       document.getElementById('allProgressCard').style.display = 'none';
     });
   });
+
+  // Функция для обновления предпросмотра сниппета при единичной генерации
+  function updateSingleSnippetPreview(jsonLdCode, serverDomain) {
+    const snippetContainer = document.getElementById('singleSnippet');
+    if (!snippetContainer) return;
+    
+    try {
+      // Извлекаем JSON-LD из кода
+      const jsonMatch = jsonLdCode.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+      
+      if (jsonMatch && jsonMatch[1]) {
+        const jsonData = JSON.parse(jsonMatch[1].trim());
+        const type = jsonData['@type'];
+        
+        // Проверяем, является ли этот тип тем, что не отображается в сниппете
+        const nonVisibleTypes = ['Organization', 'WebSite', 'ImageObject'];
+        if (nonVisibleTypes.includes(type)) {
+          snippetContainer.innerHTML = `
+            <div class="google-snippet text-center">
+              <div class="py-3">
+                <i class="bi bi-info-circle text-muted me-2"></i>
+                <span class="text-muted">Этот тип микроразметки не влияет на отображение в поисковой выдаче</span>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        // Получаем доменное имя из URL, введенного пользователем или переданного сервером
+        let domain = serverDomain || '';
+        
+        // Если домен не был передан с сервера, пытаемся получить его из других источников
+        if (!domain) {
+          const urlInput = document.getElementById('url').value;
+          try {
+            if (urlInput) {
+              const urlObj = new URL(urlInput);
+              domain = urlObj.hostname;
+            } else if (jsonData.url) {
+              const urlObj = new URL(jsonData.url);
+              domain = urlObj.hostname;
+            } else {
+              domain = 'example.com';
+            }
+          } catch (e) {
+            domain = 'example.com';
+          }
+        }
+        
+        // В зависимости от типа микроразметки создаем соответствующий предпросмотр
+        switch (type) {
+          case 'LocalBusiness':
+            createLocalBusinessSnippet(snippetContainer, jsonData, domain);
+            break;
+          case 'Product':
+            createProductSnippet(snippetContainer, jsonData, domain);
+            break;
+          case 'CollectionPage':
+            createCollectionSnippet(snippetContainer, jsonData, domain);
+            break;
+          case 'FAQPage':
+            createFAQSnippet(snippetContainer, jsonData, domain);
+            break;
+          case 'QAPage':
+            createQASnippet(snippetContainer, jsonData, domain);
+            break;
+          case 'BreadcrumbList':
+            createBreadcrumbsSnippet(snippetContainer, jsonData, domain);
+            break;
+          default:
+            createDefaultSnippet(snippetContainer, jsonData, domain);
+        }
+      } else {
+        // Если не удалось найти JSON-LD
+        snippetContainer.innerHTML = `
+          <div class="google-snippet-placeholder text-center py-3">
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+            <span class="text-muted">Не удалось распарсить микроразметку для предпросмотра</span>
+          </div>
+        `;
+      }
+    } catch (e) {
+      console.warn('Не удалось распарсить микроразметку:', e);
+      snippetContainer.innerHTML = `
+        <div class="google-snippet-placeholder text-center py-3">
+          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+          <span class="text-muted">Ошибка при создании предпросмотра: ${e.message}</span>
+        </div>
+      `;
+    }
+  }
+  
+  // Вспомогательные функции для создания предпросмотров разных типов
+  function createLocalBusinessSnippet(container, data, domain) {
+    const address = data.address ? 
+      [data.address.addressLocality, data.address.streetAddress].filter(Boolean).join(', ') : 
+      'Москва, ул. Примерная, 123';
+    
+    const phone = data.telephone || '+7 (XXX) XXX-XX-XX';
+    const hours = data.openingHours || 'Пн-Пт: 9:00-18:00';
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">${domain} - Контактная информация</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div><i class="bi bi-geo-alt text-secondary me-1"></i> Адрес: <span class="snippet-address">${address}</span></div>
+          <div><i class="bi bi-telephone text-secondary me-1"></i> Телефон: <span class="snippet-phone">${phone}</span></div>
+          <div><i class="bi bi-clock text-secondary me-1"></i> Часы работы: <span class="snippet-hours">${hours}</span></div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createProductSnippet(container, data, domain) {
+    let price = '15 990';
+    let currency = '₽';
+    
+    if (data.offers) {
+      if (data.offers.price) {
+        price = formatPrice(data.offers.price);
+        currency = data.offers.priceCurrency === 'RUB' ? '₽' : (data.offers.priceCurrency || '₽');
+      }
+    }
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">${data.name || 'Название товара'} - ${domain}</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div class="d-flex align-items-center mb-1">
+            <div class="snippet-rating">
+              <span class="text-warning">★★★★★</span>
+            </div>
+            <span class="snippet-reviews ms-1">(123 отзыва)</span>
+            <span class="snippet-price ms-2 fw-bold">${price} ${currency}</span>
+          </div>
+          <div>В наличии · Быстрая доставка</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createCollectionSnippet(container, data, domain) {
+    let lowPrice = '5 000';
+    let highPrice = '150 000';
+    let currency = '₽';
+    
+    if (data.mainEntity && data.mainEntity.offers) {
+      const offers = data.mainEntity.offers;
+      if (offers.lowPrice && offers.highPrice) {
+        lowPrice = formatPrice(offers.lowPrice);
+        highPrice = formatPrice(offers.highPrice);
+        currency = offers.priceCurrency === 'RUB' ? '₽' : (offers.priceCurrency || '₽');
+      }
+    }
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">${data.name || 'Каталог товаров'} - ${domain}</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div class="d-flex align-items-center mb-1">
+            <div class="snippet-rating">
+              <span class="text-warning">★★★★★</span>
+            </div>
+            <span class="snippet-reviews ms-1">(324 отзыва)</span>
+          </div>
+          <div>Цены: <span class="fw-bold">от ${lowPrice}${currency} до ${highPrice}${currency}</span> · 125 товаров</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createFAQSnippet(container, data, domain) {
+    let faqItems = '';
+    
+    if (data.mainEntity && Array.isArray(data.mainEntity)) {
+      // Берем первые 2 вопроса для предпросмотра
+      const questions = data.mainEntity.slice(0, 2);
+      
+      faqItems = questions.map((q, index) => {
+        const answer = q.acceptedAnswer.text.length > 60 
+          ? q.acceptedAnswer.text.substring(0, 60) + '...' 
+          : q.acceptedAnswer.text;
+          
+        return `
+          <div class="faq-item${index < questions.length - 1 ? ' mb-2' : ''}">
+            <div class="fw-bold">${q.name}</div>
+            <div>${answer}</div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      faqItems = `
+        <div class="faq-item mb-2">
+          <div class="fw-bold">Как сделать заказ?</div>
+          <div>Для оформления заказа добавьте товары в корзину и следуйте...</div>
+        </div>
+        <div class="faq-item">
+          <div class="fw-bold">Какие способы доставки вы предлагаете?</div>
+          <div>Мы предлагаем курьерскую доставку, самовывоз из наших...</div>
+        </div>
+      `;
+    }
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">Часто задаваемые вопросы - ${domain}</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div class="snippet-faq">
+            ${faqItems}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createQASnippet(container, data, domain) {
+    let questionName = 'Товары';
+    let answerText = '⭐ Высокое качество товаров 💎 Доставка по всей России 💎 Выгодная бонусная система';
+    let upvoteCount = 26;
+    let answerCount = 1;
+    
+    if (data.mainEntity) {
+      if (data.mainEntity.name) {
+        questionName = data.mainEntity.name;
+      }
+      
+      if (data.mainEntity.acceptedAnswer && data.mainEntity.acceptedAnswer.text) {
+        answerText = data.mainEntity.acceptedAnswer.text;
+      }
+      
+      if (data.mainEntity.upvoteCount) {
+        upvoteCount = data.mainEntity.upvoteCount;
+      } else if (data.mainEntity.acceptedAnswer && data.mainEntity.acceptedAnswer.upvoteCount) {
+        upvoteCount = data.mainEntity.acceptedAnswer.upvoteCount;
+      }
+      
+      if (data.mainEntity.answerCount) {
+        answerCount = data.mainEntity.answerCount;
+      }
+    }
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">${domain} - Вопросы и ответы</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div class="fw-bold mb-1">${questionName}</div>
+          <div class="mb-1">${answerText}</div>
+          <div class="text-secondary small">
+            <span>${upvoteCount} человек нашли ответ полезным</span>
+            <span class="ms-3">Ответов: ${answerCount}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createBreadcrumbsSnippet(container, data, domain) {
+    let breadcrumbs = 'Главная > Каталог > 📦📦📦 Категория товаров > Подкатегория';
+    
+    if (data.itemListElement && Array.isArray(data.itemListElement)) {
+      breadcrumbs = data.itemListElement.map(item => item.name).join(' > ');
+    }
+    
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">Название страницы - ${domain}</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          <div class="breadcrumbs small text-secondary">
+            ${breadcrumbs}
+          </div>
+          <div>Описание страницы с хлебными крошками.</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  function createDefaultSnippet(container, data, domain) {
+    container.innerHTML = `
+      <div class="google-snippet">
+        <div class="snippet-title text-primary fw-bold">${data.name || domain}</div>
+        <div class="snippet-url text-success small mb-1">${data.url || 'https://' + domain}</div>
+        <div class="snippet-description text-dark small">
+          ${data.description || 'Описание не найдено в микроразметке'}
+        </div>
+      </div>
+    `;
+  }
+  
+  // Вспомогательная функция для форматирования цены
+  function formatPrice(price) {
+    // Форматируем число без валюты, убираем возможные пробелы в конце
+    return parseFloat(price).toLocaleString('ru-RU').trim();
+  }
 </script>
 </body>
 </html>
