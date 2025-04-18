@@ -19,6 +19,13 @@
 <div class="container">
   <h1 class="text-center mb-4"><i class="bi bi-code-square schema-icon"></i>iSEO Schema Generator</h1>
   
+  <!-- Добавляем кнопку "Вернуться назад" вверху страницы -->
+  <div class="mb-3">
+    <a href="/" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left me-2"></i>Вернуться назад
+    </a>
+  </div>
+  
   <div class="schema-info">
     <p>Внутренний инструмент для SEO-специалистов, генерирующий микроразметку Schema.org на основе анализа сайта. <strong>AI с функцией веб-поиска создаёт персонализированную микроразметку, основанную на реальном содержимом.</strong></p>
     <div class="alert alert-info">
@@ -132,6 +139,9 @@
           <h6 class="snippet-preview-title mb-3">
             <i class="bi bi-eye me-2"></i>Предпросмотр Rich Snippets:
             <span class="badge bg-info ms-2">Google</span>
+            <button class="btn btn-sm btn-outline-primary float-end" id="editSnippetBtn">
+              <i class="bi bi-pencil-square"></i> Редактировать
+            </button>
           </h6>
           <div class="snippet-container p-3 border rounded bg-white" id="singleSnippet">
             <!-- Здесь будет отображаться предпросмотр сниппета -->
@@ -140,6 +150,39 @@
               <span class="text-muted">Сниппет будет отображен после генерации</span>
             </div>
           </div>
+          
+          <!-- Форма редактирования сниппета -->
+          <div id="snippetEditForm" class="mt-3 border rounded p-3 bg-light" style="display:none;">
+            <h6 class="mb-3"><i class="bi bi-pencil me-2"></i>Редактирование сниппета</h6>
+            
+            <div class="mb-3">
+              <label for="snippetTitle" class="form-label">Заголовок:</label>
+              <input type="text" class="form-control" id="snippetTitle">
+            </div>
+            
+            <div class="mb-3">
+              <label for="snippetUrl" class="form-label">URL:</label>
+              <input type="text" class="form-control" id="snippetUrl">
+            </div>
+            
+            <div class="mb-3">
+              <label for="snippetDescription" class="form-label">Описание:</label>
+              <textarea class="form-control" id="snippetDescription" rows="3"></textarea>
+            </div>
+            
+            <!-- Дополнительные поля для разных типов сниппетов -->
+            <div id="additionalFields"></div>
+            
+            <div class="mt-3">
+              <button type="button" class="btn btn-primary" id="applySnippetChangesBtn">
+                <i class="bi bi-check-lg me-1"></i> Применить изменения
+              </button>
+              <button type="button" class="btn btn-outline-secondary ms-2" id="cancelSnippetEditBtn">
+                <i class="bi bi-x me-1"></i> Отмена
+              </button>
+            </div>
+          </div>
+          
           <div class="snippet-notice text-center text-muted small mt-2">
             <i class="bi bi-info-circle me-1"></i>Это приблизительный вид сниппета. Фактическое отображение может отличаться.
           </div>
@@ -583,6 +626,10 @@
         const jsonData = JSON.parse(jsonMatch[1].trim());
         const type = jsonData['@type'];
         
+        // Сохраняем тип сниппета в глобальной переменной для редактирования
+        currentSnippetType = type;
+        currentSnippetData = jsonData;
+        
         // Проверяем, является ли этот тип тем, что не отображается в сниппете
         const nonVisibleTypes = ['Organization', 'WebSite', 'ImageObject'];
         if (nonVisibleTypes.includes(type)) {
@@ -868,6 +915,443 @@
     // Форматируем число без валюты, убираем возможные пробелы в конце
     return parseFloat(price).toLocaleString('ru-RU').trim();
   }
+  
+  // Глобальные переменные для хранения текущих данных сниппета
+  let currentSnippetType = '';
+  let currentSnippetData = null;
+  
+  // Обработчики событий редактирования сниппета
+  document.getElementById('editSnippetBtn').addEventListener('click', function() {
+    // Проверяем, есть ли сгенерированный сниппет
+    const snippetContainer = document.getElementById('singleSnippet');
+    const snippetTitle = snippetContainer.querySelector('.snippet-title');
+    
+    if (!snippetTitle || snippetContainer.querySelector('.google-snippet-placeholder')) {
+      alert('Сначала сгенерируйте микроразметку для редактирования предпросмотра');
+      return;
+    }
+    
+    // Показываем форму редактирования
+    document.getElementById('snippetEditForm').style.display = 'block';
+    
+    // Заполняем форму текущими данными сниппета
+    fillEditForm();
+  });
+  
+  // Заполнение формы редактирования текущими данными сниппета
+  function fillEditForm() {
+    const snippetContainer = document.getElementById('singleSnippet');
+    const snippetTitle = snippetContainer.querySelector('.snippet-title');
+    const snippetUrl = snippetContainer.querySelector('.snippet-url');
+    const snippetDescription = snippetContainer.querySelector('.snippet-description');
+    
+    // Заполняем основные поля
+    document.getElementById('snippetTitle').value = snippetTitle ? snippetTitle.textContent : '';
+    document.getElementById('snippetUrl').value = snippetUrl ? snippetUrl.textContent : '';
+    
+    // Для описания берем текстовое содержимое, но не все HTML
+    let descriptionText = '';
+    if (snippetDescription) {
+      // Клонируем элемент, чтобы не менять исходный
+      const descClone = snippetDescription.cloneNode(true);
+      
+      // Заменяем HTML теги на текстовые представления
+      const paragraphs = descClone.querySelectorAll('div:not(.d-flex, .snippet-rating)');
+      paragraphs.forEach(p => {
+        descriptionText += p.textContent.trim() + '\n';
+      });
+      
+      document.getElementById('snippetDescription').value = descriptionText.trim();
+    }
+    
+    // Очищаем дополнительные поля
+    document.getElementById('additionalFields').innerHTML = '';
+    
+    // В зависимости от типа сниппета добавляем дополнительные поля
+    if (currentSnippetType === 'Product') {
+      addProductFields(snippetContainer);
+    } else if (currentSnippetType === 'CollectionPage') {
+      addCollectionFields(snippetContainer);
+    } else if (currentSnippetType === 'FAQPage') {
+      addFAQFields(snippetContainer);
+    } else if (currentSnippetType === 'LocalBusiness') {
+      addLocalBusinessFields(snippetContainer);
+    } else if (currentSnippetType === 'QAPage') {
+      addQAFields(snippetContainer);
+    } else if (currentSnippetType === 'BreadcrumbList') {
+      addBreadcrumbsFields(snippetContainer);
+    }
+  }
+  
+  // Добавление полей для разных типов сниппетов
+  function addProductFields(snippetContainer) {
+    const priceEl = snippetContainer.querySelector('.snippet-price');
+    const additionalFields = document.getElementById('additionalFields');
+    
+    const priceValue = priceEl ? priceEl.textContent.trim().replace(/[^\d\s,]/g, '') : '';
+    
+    additionalFields.innerHTML = `
+      <div class="mb-3">
+        <label for="snippetPrice" class="form-label">Цена:</label>
+        <input type="text" class="form-control" id="snippetPrice" value="${priceValue}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetRating" class="form-label">Количество отзывов:</label>
+        <input type="number" class="form-control" id="snippetRating" min="0" value="123">
+      </div>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="snippetInStock" checked>
+        <label class="form-check-label" for="snippetInStock">
+          В наличии
+        </label>
+      </div>
+    `;
+  }
+  
+  function addCollectionFields(snippetContainer) {
+    const priceText = snippetContainer.querySelector('.fw-bold');
+    const additionalFields = document.getElementById('additionalFields');
+    
+    let lowPrice = '5000';
+    let highPrice = '150000';
+    
+    if (priceText) {
+      const priceMatch = priceText.textContent.match(/от\s+(\d[\d\s,]+)₽\s+до\s+(\d[\d\s,]+)₽/);
+      if (priceMatch) {
+        lowPrice = priceMatch[1].replace(/\s/g, '');
+        highPrice = priceMatch[2].replace(/\s/g, '');
+      }
+    }
+    
+    additionalFields.innerHTML = `
+      <div class="mb-3">
+        <label for="snippetLowPrice" class="form-label">Минимальная цена:</label>
+        <input type="text" class="form-control" id="snippetLowPrice" value="${lowPrice}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetHighPrice" class="form-label">Максимальная цена:</label>
+        <input type="text" class="form-control" id="snippetHighPrice" value="${highPrice}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetOfferCount" class="form-label">Количество товаров:</label>
+        <input type="number" class="form-control" id="snippetOfferCount" min="1" value="125">
+      </div>
+    `;
+  }
+  
+  function addFAQFields(snippetContainer) {
+    const faqItems = snippetContainer.querySelectorAll('.faq-item');
+    const additionalFields = document.getElementById('additionalFields');
+    
+    let faqHtml = '<div class="mb-3"><label class="form-label">Вопросы и ответы:</label>';
+    
+    if (faqItems.length) {
+      faqItems.forEach((item, index) => {
+        const question = item.querySelector('.fw-bold').textContent;
+        const answer = item.querySelector('div:not(.fw-bold)').textContent;
+        
+        faqHtml += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="mb-2">
+                <label for="faqQuestion${index}" class="form-label">Вопрос ${index + 1}:</label>
+                <input type="text" class="form-control" id="faqQuestion${index}" value="${question}">
+              </div>
+              <div class="mb-2">
+                <label for="faqAnswer${index}" class="form-label">Ответ ${index + 1}:</label>
+                <textarea class="form-control" id="faqAnswer${index}" rows="2">${answer}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      // Если нет вопросов, добавляем 2 пустых
+      for (let i = 0; i < 2; i++) {
+        faqHtml += `
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="mb-2">
+                <label for="faqQuestion${i}" class="form-label">Вопрос ${i + 1}:</label>
+                <input type="text" class="form-control" id="faqQuestion${i}" value="">
+              </div>
+              <div class="mb-2">
+                <label for="faqAnswer${i}" class="form-label">Ответ ${i + 1}:</label>
+                <textarea class="form-control" id="faqAnswer${i}" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    faqHtml += '</div>';
+    additionalFields.innerHTML = faqHtml;
+  }
+  
+  function addLocalBusinessFields(snippetContainer) {
+    const addressEl = snippetContainer.querySelector('.snippet-address');
+    const phoneEl = snippetContainer.querySelector('.snippet-phone');
+    const hoursEl = snippetContainer.querySelector('.snippet-hours');
+    
+    const additionalFields = document.getElementById('additionalFields');
+    
+    additionalFields.innerHTML = `
+      <div class="mb-3">
+        <label for="snippetAddress" class="form-label">Адрес:</label>
+        <input type="text" class="form-control" id="snippetAddress" value="${addressEl ? addressEl.textContent : ''}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetPhone" class="form-label">Телефон:</label>
+        <input type="text" class="form-control" id="snippetPhone" value="${phoneEl ? phoneEl.textContent : ''}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetHours" class="form-label">Часы работы:</label>
+        <input type="text" class="form-control" id="snippetHours" value="${hoursEl ? hoursEl.textContent : ''}">
+      </div>
+    `;
+  }
+  
+  function addQAFields(snippetContainer) {
+    const questionEl = snippetContainer.querySelector('.fw-bold');
+    const answerEl = snippetContainer.querySelector('.mb-1:not(.fw-bold)');
+    const upvoteEl = snippetContainer.querySelector('.text-secondary');
+    
+    let upvoteText = upvoteEl ? upvoteEl.textContent : '';
+    let upvoteMatch = upvoteText.match(/(\d+)/);
+    let upvoteCount = upvoteMatch ? upvoteMatch[1] : '26';
+    
+    let answerCountMatch = upvoteText.match(/Ответов: (\d+)/);
+    let answerCount = answerCountMatch ? answerCountMatch[1] : '1';
+    
+    const additionalFields = document.getElementById('additionalFields');
+    
+    additionalFields.innerHTML = `
+      <div class="mb-3">
+        <label for="snippetQuestion" class="form-label">Вопрос:</label>
+        <input type="text" class="form-control" id="snippetQuestion" value="${questionEl ? questionEl.textContent : ''}">
+      </div>
+      <div class="mb-3">
+        <label for="snippetAnswer" class="form-label">Ответ:</label>
+        <textarea class="form-control" id="snippetAnswer" rows="3">${answerEl ? answerEl.textContent : ''}</textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="snippetUpvotes" class="form-label">Голоса за ответ:</label>
+          <input type="number" class="form-control" id="snippetUpvotes" min="0" value="${upvoteCount}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="snippetAnswerCount" class="form-label">Количество ответов:</label>
+          <input type="number" class="form-control" id="snippetAnswerCount" min="1" value="${answerCount}">
+        </div>
+      </div>
+    `;
+  }
+  
+  function addBreadcrumbsFields(snippetContainer) {
+    const breadcrumbsEl = snippetContainer.querySelector('.breadcrumbs');
+    const breadcrumbsText = breadcrumbsEl ? breadcrumbsEl.textContent : 'Главная > Каталог > Категория > Подкатегория';
+    
+    const breadcrumbs = breadcrumbsText.split('>').map(item => item.trim());
+    
+    const additionalFields = document.getElementById('additionalFields');
+    
+    let breadcrumbsHtml = '<div class="mb-3"><label class="form-label">Хлебные крошки:</label>';
+    
+    breadcrumbs.forEach((crumb, index) => {
+      breadcrumbsHtml += `
+        <div class="input-group mb-2">
+          <span class="input-group-text">${index + 1}</span>
+          <input type="text" class="form-control" id="breadcrumb${index}" value="${crumb}">
+        </div>
+      `;
+    });
+    
+    breadcrumbsHtml += '</div>';
+    additionalFields.innerHTML = breadcrumbsHtml;
+  }
+  
+  // Применение изменений к предпросмотру сниппета
+  document.getElementById('applySnippetChangesBtn').addEventListener('click', function() {
+    // Получаем значения из формы
+    const title = document.getElementById('snippetTitle').value;
+    const url = document.getElementById('snippetUrl').value;
+    const description = document.getElementById('snippetDescription').value;
+    
+    // Обновляем сниппет в зависимости от типа
+    const snippetContainer = document.getElementById('singleSnippet');
+    const snippetTitle = snippetContainer.querySelector('.snippet-title');
+    const snippetUrl = snippetContainer.querySelector('.snippet-url');
+    
+    if (snippetTitle) snippetTitle.textContent = title;
+    if (snippetUrl) snippetUrl.textContent = url;
+    
+    // Обновляем специфические поля в зависимости от типа сниппета
+    if (currentSnippetType === 'Product') {
+      updateProductSnippet(snippetContainer, description);
+    } else if (currentSnippetType === 'CollectionPage') {
+      updateCollectionSnippet(snippetContainer, description);
+    } else if (currentSnippetType === 'FAQPage') {
+      updateFAQSnippet(snippetContainer);
+    } else if (currentSnippetType === 'LocalBusiness') {
+      updateLocalBusinessSnippet(snippetContainer);
+    } else if (currentSnippetType === 'QAPage') {
+      updateQASnippet(snippetContainer);
+    } else if (currentSnippetType === 'BreadcrumbList') {
+      updateBreadcrumbsSnippet(snippetContainer, description);
+    } else {
+      // Для общего случая просто обновляем описание
+      const descriptionEl = snippetContainer.querySelector('.snippet-description');
+      if (descriptionEl) descriptionEl.textContent = description;
+    }
+    
+    // Скрываем форму редактирования
+    document.getElementById('snippetEditForm').style.display = 'none';
+  });
+  
+  // Функции обновления различных типов сниппетов
+  function updateProductSnippet(container, description) {
+    const price = document.getElementById('snippetPrice').value;
+    const rating = document.getElementById('snippetRating').value;
+    const inStock = document.getElementById('snippetInStock').checked;
+    
+    const priceEl = container.querySelector('.snippet-price');
+    const reviewsEl = container.querySelector('.snippet-reviews');
+    const statusEl = container.querySelector('.snippet-description > div:nth-child(2)');
+    
+    if (priceEl) priceEl.textContent = `${price}₽`;
+    if (reviewsEl) reviewsEl.textContent = `(${rating} отзыва)`;
+    if (statusEl) statusEl.textContent = inStock ? 'В наличии · Быстрая доставка' : 'Нет в наличии';
+  }
+  
+  function updateCollectionSnippet(container, description) {
+    const lowPrice = document.getElementById('snippetLowPrice').value;
+    const highPrice = document.getElementById('snippetHighPrice').value;
+    const offerCount = document.getElementById('snippetOfferCount').value;
+    
+    const priceEl = container.querySelector('.fw-bold');
+    const reviewsEl = container.querySelector('.snippet-reviews');
+    
+    if (priceEl) {
+      const formattedLowPrice = formatPrice(lowPrice);
+      const formattedHighPrice = formatPrice(highPrice);
+      priceEl.textContent = `от ${formattedLowPrice}₽ до ${formattedHighPrice}₽`;
+    }
+    
+    if (reviewsEl) reviewsEl.textContent = `(324 отзыва)`;
+    
+    // Обновляем текст с количеством товаров
+    const priceRow = container.querySelector('.snippet-description > div:nth-child(2)');
+    if (priceRow) {
+      const priceSpan = priceRow.querySelector('.fw-bold');
+      const priceText = priceSpan ? priceSpan.outerHTML : `<span class="fw-bold">от ${formatPrice(lowPrice)}₽ до ${formatPrice(highPrice)}₽</span>`;
+      priceRow.innerHTML = `Цены: ${priceText} · ${offerCount} товаров`;
+    }
+  }
+  
+  function updateFAQSnippet(container) {
+    const faqContainer = container.querySelector('.snippet-faq');
+    if (!faqContainer) return;
+    
+    faqContainer.innerHTML = '';
+    
+    // Получаем вопросы и ответы из формы
+    const questions = [];
+    const answers = [];
+    
+    // Ищем все поля с вопросами и ответами
+    const questionInputs = document.querySelectorAll('[id^="faqQuestion"]');
+    const answerInputs = document.querySelectorAll('[id^="faqAnswer"]');
+    
+    for (let i = 0; i < questionInputs.length; i++) {
+      if (questionInputs[i].value && answerInputs[i].value) {
+        questions.push(questionInputs[i].value);
+        answers.push(answerInputs[i].value);
+      }
+    }
+    
+    // Создаем элементы для вопросов и ответов
+    for (let i = 0; i < questions.length; i++) {
+      const faqItem = document.createElement('div');
+      faqItem.className = 'faq-item' + (i < questions.length - 1 ? ' mb-2' : '');
+      
+      const questionEl = document.createElement('div');
+      questionEl.className = 'fw-bold';
+      questionEl.textContent = questions[i];
+      
+      const answerEl = document.createElement('div');
+      answerEl.textContent = answers[i].length > 60 ? answers[i].substring(0, 60) + '...' : answers[i];
+      
+      faqItem.appendChild(questionEl);
+      faqItem.appendChild(answerEl);
+      faqContainer.appendChild(faqItem);
+    }
+  }
+  
+  function updateLocalBusinessSnippet(container) {
+    const address = document.getElementById('snippetAddress').value;
+    const phone = document.getElementById('snippetPhone').value;
+    const hours = document.getElementById('snippetHours').value;
+    
+    const addressEl = container.querySelector('.snippet-address');
+    const phoneEl = container.querySelector('.snippet-phone');
+    const hoursEl = container.querySelector('.snippet-hours');
+    
+    if (addressEl) addressEl.textContent = address;
+    if (phoneEl) phoneEl.textContent = phone;
+    if (hoursEl) hoursEl.textContent = hours;
+  }
+  
+  function updateQASnippet(container) {
+    const question = document.getElementById('snippetQuestion').value;
+    const answer = document.getElementById('snippetAnswer').value;
+    const upvotes = document.getElementById('snippetUpvotes').value;
+    const answerCount = document.getElementById('snippetAnswerCount').value;
+    
+    const questionEl = container.querySelector('.fw-bold');
+    const answerEl = container.querySelector('.mb-1:not(.fw-bold)');
+    const upvotesEl = container.querySelector('.text-secondary');
+    
+    if (questionEl) questionEl.textContent = question;
+    if (answerEl) answerEl.textContent = answer;
+    
+    if (upvotesEl) {
+      const spans = upvotesEl.querySelectorAll('span');
+      if (spans.length >= 2) {
+        spans[0].textContent = `${upvotes} человек нашли ответ полезным`;
+        spans[1].textContent = `Ответов: ${answerCount}`;
+      }
+    }
+  }
+  
+  function updateBreadcrumbsSnippet(container, description) {
+    const breadcrumbsEl = container.querySelector('.breadcrumbs');
+    if (!breadcrumbsEl) return;
+    
+    // Получаем значения хлебных крошек из формы
+    const breadcrumbs = [];
+    const breadcrumbInputs = document.querySelectorAll('[id^="breadcrumb"]');
+    
+    breadcrumbInputs.forEach(input => {
+      if (input.value) {
+        breadcrumbs.push(input.value);
+      }
+    });
+    
+    // Обновляем хлебные крошки
+    breadcrumbsEl.textContent = breadcrumbs.join(' > ');
+    
+    // Обновляем описание, если есть
+    const descriptionEl = container.querySelector('.snippet-description > div:nth-child(2)');
+    if (descriptionEl && description) {
+      descriptionEl.textContent = description;
+    }
+  }
+  
+  // Отмена редактирования сниппета
+  document.getElementById('cancelSnippetEditBtn').addEventListener('click', function() {
+    document.getElementById('snippetEditForm').style.display = 'none';
+  });
 </script>
 </body>
 </html>
